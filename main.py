@@ -35,7 +35,7 @@ def play(player, bot, winner_loser_options, end_game):
         player (String): the player option (rock, paper, scissors) choice
         bot (String): the computer option (rock, paper, scissors) choice
         winner_loser_options (dict): winning option K to it's losing option V
-        end_game (list): strings result to draw, win or lose
+        end_game (list): strings result to draw [-1], win [0] or lose [1]
 
     Returns:
        (String): the result of the match

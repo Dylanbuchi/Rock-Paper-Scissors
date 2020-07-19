@@ -10,28 +10,76 @@ def play():
     # load settings
     options, winner_loser_options = settings()
 
+    # get player's name
+    print("Enter your name: ", end="")
+    player_name = input()
+    print(f"Hello, {player_name}")
+
+    # get user score
+    user_score = get_score(player_name)
+
     # game loop
     while True:
 
-        player = input("Choose Rock, Paper or Scissors:\n").lower()
+        try:
+            player = input().lower().strip()
+        except EOFError:
+            print("EOFError")
+            break
 
-        if player == "q":
+        if player == "!exit":
             print("Bye!")
             break
 
+        elif player == "!rating":
+
+            print(f"Your rating: {user_score[player_name]}")
+
         elif player in options:
-            # random option for the computer
+            # random option for the comuser_score = get_score(player_name)puter
             bot = random.choice(options)
 
             # get the end game results into a list
             end_game = get_end_results(bot)
 
             # play the game
-            print(game(player, bot, winner_loser_options, end_game))
+            result = game(player, bot, winner_loser_options, end_game)
 
+            # scores
+            if result == end_game[0]:
+                user_score[player_name] += 100
+
+            elif result == end_game[2]:
+                user_score[player_name] += 50
+            print(result)
         else:
             # message if player enter wrong choice
-            print("choose rock, paper or scissors, or exit the game with \"q\"")
+            print("Invalid input")
+
+
+def get_score(player_name):
+    # user with score dict
+    user_with_score = dict()
+
+    # read file
+    file_name = "rating.txt"
+
+    rating_file = open(file_name, "r")
+
+    # check if user score is in the file
+
+    for line in rating_file:
+        parts = line.strip().split()
+        name = parts[0]
+        score = int(parts[1])
+        if name == player_name:
+            user_with_score[name] = score
+        else:
+            user_with_score[player_name] = 0
+
+    rating_file.close()
+
+    return user_with_score
 
 
 def get_end_results(bot):
